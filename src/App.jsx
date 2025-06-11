@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
-const API_BASE = "http://localhost:8000";
-
+// const API_BASE = "http://localhost:8000";
+const API_BASE = "https://apz-pzpi-22-10-ielizarenko-oleksandr-production.up.railway.app"
 function App() {
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [view, setView] = useState(token ? "routes" : "auth");
