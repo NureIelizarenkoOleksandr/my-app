@@ -16,9 +16,7 @@ steps:
   displayName: 'npm install and build'
 
 - powershell: |
-    # Вход в Azure (предполагается, что сервисное подключение настроено)
-    az login --service-principal -u $(AZURE_CLIENT_ID) -p $(AZURE_CLIENT_SECRET) --tenant $(AZURE_TENANT_ID)
-    
-    # Деплой React build в статическое веб-приложение
-    az staticwebapp upload --name lb-5-front --resource-group lb-5 --source-path ./build
+    # Деплой React build в статическое веб-приложение с использованием токена
+    $token = "702ed200eb12fa70c2dd9f14ab885e7c51d257bbb60ac2012d6a8b584841966f01-fd76cf3b-8538-4d81-87f9-2bc43df5f27200f17230d5f59f0f"
+    az staticwebapp upload --name lb-5-front --resource-group lb-5 --source-path ./build --token $token
   displayName: 'Deploy to Azure Static Web App'
