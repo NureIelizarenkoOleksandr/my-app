@@ -1,31 +1,24 @@
-# Node.js with React + deploy to Azure Static Web App
-
 trigger:
-- main   # твоя ветка main
+- main  # твоя ветка
 
 pool:
-  name: 'Default'   # self-hosted агент, если настроен
-
-variables:
-  AZURE_STATIC_WEB_APP_API_TOKEN: $(AZURE_STATIC_WEB_APP_API_TOKEN) # токен из переменных DevOps
+  name: 'Default'  # Windows self-hosted агент
 
 steps:
-# Установка Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
-# Установка зависимостей и сборка
-- script: |
+- powershell: |
     npm install
     npm run build
   displayName: 'npm install and build'
 
-# Деплой в Azure Static Web App
-- task: AzureStaticWebApp@0
-  inputs:
-    app_location: '/'                # путь к исходникам React
-    output_location: 'build'         # папка сборки React
-    azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APP_API_TOKEN)
+- powershell: |
+    # Вход в Azure (предполагается, что сервисное подключение настроено)
+    az login --service-principal -u $(AZURE_CLIENT_ID) -p $(AZURE_CLIENT_SECRET) --tenant $(AZURE_TENANT_ID)
+    
+    # Деплой React build в статическое веб-приложение
+    az staticwebapp upload --name lb-5-front --resource-group lb-5 --source-path ./build
   displayName: 'Deploy to Azure Static Web App'
