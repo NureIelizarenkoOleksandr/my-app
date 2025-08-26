@@ -1,8 +1,14 @@
+
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
 trigger:
-- main  # твоя ветка
+- main
 
 pool:
-  name: 'Default'  # Windows self-hosted агент
+  vmImage: Default
 
 steps:
 - task: NodeTool@0
@@ -10,13 +16,7 @@ steps:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
-- powershell: |
+- script: |
     npm install
     npm run build
   displayName: 'npm install and build'
-
-- powershell: |
-    # Деплой React build в статическое веб-приложение с использованием токена
-    $token = "702ed200eb12fa70c2dd9f14ab885e7c51d257bbb60ac2012d6a8b584841966f01-fd76cf3b-8538-4d81-87f9-2bc43df5f27200f17230d5f59f0f"
-    az staticwebapp upload --name lb-5-front --resource-group lb-5 --source-path ./build --token $token
-  displayName: 'Deploy to Azure Static Web App'
